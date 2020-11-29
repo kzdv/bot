@@ -1,0 +1,44 @@
+{
+  "name": "VBRP.MCP",
+  "version": "1.0.0",
+  "description": "VBRP Discord Bot",
+  "main": "src/index.js",
+  "scripts": {
+    "lint": "eslint src --ext .js,.ts",
+    "dev": "tsc-watch --project . --outDir ./dist --onSuccess \"nodemon ./dist/index.js\"",
+    "build": "tsc -p .",
+    "prod": "node dist/index.js"
+  },
+  "huskey": {
+    "pre-commit": "yarn lint"
+  },
+  "author": "Daniel A. Hawton <daniel@hawton.com>",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.21.0",
+    "babel-preset-minify": "^0.5.1",
+    "discord.js": "^12.5.1",
+    "google-auth-library": "^6.1.3",
+    "googleapis": "39"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/google-spreadsheet": "^3.0.2",
+    "@types/node": "^14.14.10",
+    "@typescript-eslint/eslint-plugin": "^4.8.2",
+    "@typescript-eslint/parser": "^4.8.2",
+    "eslint": "^7.14.0",
+    "eslint-config-airbnb-typescript": "^12.0.0",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "nodemon": "^2.0.6",
+    "prettier": "^2.2.0",
+    "ts-node": "^9.0.0",
+    "tsc-watch": "^4.2.9",
+    "typescript": "^4.1.2"
+  }
+}
