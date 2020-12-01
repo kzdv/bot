@@ -34,6 +34,9 @@ class ApplicationHandler {
       data.forEach((v: string[], idx: number) => {
         if (idx === 0) {
           Object.keys(v).forEach((key) => {
+            if (v[key].length > 100) {
+              v[key] = v[key].substring(0, 100);
+            }
             appquestions.push(v[key]);
           });
         } else {
