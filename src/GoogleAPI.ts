@@ -1,13 +1,8 @@
 /* eslint-disable @typescript-eslint/lines-between-class-members */
-import fs from "fs";
-import path from "path";
-import { google } from "googleapis";
 import { JWT } from "google-auth-library";
 import axios from "axios";
-import Log from "./log";
+import Log from "./Log";
 
-const GOOGLE_PATH = path.resolve(__dirname, "google");
-const TOKEN_PATH = path.resolve(__dirname, "google", "token.json");
 const SCOPE = ["https://www.googleapis.com/auth/spreadsheets"];
 
 class GoogleAPI {
@@ -16,9 +11,6 @@ class GoogleAPI {
   jwtInterval: NodeJS.Timer;
 
   constructor(config: Config["googleapi"]) {
-    if (fs.existsSync(GOOGLE_PATH)) {
-      fs.mkdirSync(GOOGLE_PATH);
-    }
     this.credentials = config;
   }
 
@@ -48,26 +40,49 @@ class GoogleAPI {
     await this.jwtClient.authorize();
   }
 
-  async loadSheet(id: string): Promise<{ [key: string]: string }[]> {
+  async loadSheet(id: string, sheet?: string): Promise<string> {
     let res;
-    Log.info(
-      JSON.stringify({
-        access_token: this.jwtClient.credentials.access_token,
-        expires: this.jwtClient.credentials.expiry_date,
-      }),
-    );
     try {
       res = await axios({
         method: "GET",
-        url: `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:csv`,
+        url: `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:csv${ sheet ? `&sheet=${sheet}` : "" }`,
         headers: {
           Authorization: `Bearer ${this.jwtClient.credentials.access_token}`,
         },
       });
     } catch (err) {
-      Log.error(`Error fetching application CSV for ${id}: ${err}`);
+      Log.error(`Error fetching application CSV for ${id}: ${err} - ${JSON.stringify(err.response.data)}`);
     }
     return res?.data;
+  }
+
+  async deleteRow(id: number, docId: string, sheet: string): Promise<void> {
+    try {
+      await axios({
+        method: "POST",
+        url: `https://sheets.googleapis.com/v4/spreadsheets/${docId}:batchUpdate`,
+        headers: {
+          Authorization: `Bearer ${this.jwtClient.credentials.access_token}`,
+        },
+        data: {
+          requests: [
+            {
+              "deleteDimension": {
+                "range": {
+                  "sheetId": sheet,
+                  "dimension": "ROWS",
+                  "startIndex": id,
+                  "endIndex": id+1
+                }
+              }
+            }
+          ]
+        }
+      });
+    } catch (err: any) {
+      Log.error(`Error deleting row ${id} from ${docId}: ${err} - ${JSON.stringify(err.response.data)}`);
+      Log.error(err.stack);
+    }
   }
 }
 

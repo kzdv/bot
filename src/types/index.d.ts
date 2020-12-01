@@ -2,15 +2,7 @@ declare interface Config {
   discord: {
     token: string;
   };
-  applications: {
-    type: string;
-    docId: string;
-    sheetId: string;
-    announce: {
-      column: number;
-      values: { [key: string]: string };
-    };
-  }[];
+  applications: ApplicationConfig[];
   googleapi: {
     type: string;
     project_id: string;
@@ -22,6 +14,16 @@ declare interface Config {
     token_uri: string;
     auth_provider_x509_cert_url: string;
     client_x509_cert_url: string;
+  };
+}
+
+declare interface ApplicationConfig {
+  type: string;
+  docId: string;
+  sheetId: string;
+  announce: {
+    column: number;
+    values: { [key: string]: string } | string;
   };
 }
 

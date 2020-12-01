@@ -15,7 +15,7 @@ class Utils {
     msg: string,
     embeddedmsg: Discord.MessageEmbed,
   ): void {
-    const channel = guild.channels.cache.find((ch) => ch.name === announceChannel);
+    const channel = guild.channels.cache.find((ch) => (ch.name === announceChannel || ch.id === announceChannel));
     if (!channel) return;
     (channel as Discord.TextChannel).send(msg, { embed: embeddedmsg });
   }

@@ -1,7 +1,18 @@
+import fs from "fs";
+
 class Log {
+  static lastDate: string;
+
   static write(message: string, error: boolean | null): void {
-    // eslint-disable-next-line no-console
-    console.log(`[${new Date().toISOString()}] ${error ? " ERROR - " : " INFO  - "} ${message}`);
+    const d = new Date();
+    const today = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+    if (today !== this.lastDate && fs.existsSync("log.txt")) {
+      fs.renameSync("log.txt", `log-${this.lastDate}.txt`);
+      this.lastDate = today;
+    }
+    let msg = `[${d.toISOString()}] ${error ? " ERROR - " : " INFO  - "} ${message}`
+    console.log(msg);
+    fs.appendFile("log.txt", `${msg}\n`, () => {});
   }
 
   static info(message: string): void {
