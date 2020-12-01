@@ -27,9 +27,11 @@ class ApplicationHandler {
     let doc;
     try {
       doc = await googleapi.loadSheet(this.config.docId, this.config.sheetId);
-      Log.info(`Caught new log entry for ${this.config.type}: ${Buffer.from(JSON.stringify(doc)).toString("base64")}`);
       let streamData = toReadableStream(doc);
       let data: any = await getStream.array(streamData.pipe(csvParser({ headers: false })));
+      if (data.length > 1) {
+        Log.info(`New applications detected for ${this.config.type}: ${Buffer.from(JSON.stringify(doc)).toString("base64")}`);
+      }
       const appquestions = [];
       data.forEach((v: string[], idx: number) => {
         if (idx === 0) {
