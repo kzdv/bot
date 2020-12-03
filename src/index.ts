@@ -1,10 +1,9 @@
 import Discord from "discord.js";
 import fs from "fs";
 import path from "path";
-import ApplicationHandler from "./ApplicationHandler";
-import GoogleAPI from "./GoogleAPI";
-
-import Log from "./Log";
+import ApplicationHandler from "./lib/ApplicationHandler";
+import GoogleAPI from "./lib/GoogleAPI";
+import Log from "./lib/Log";
 
 if (!fs.existsSync(path.resolve("config.json"))) {
   Log.error("Config not found");
@@ -28,6 +27,12 @@ client.on("ready", async () => {
   config.applications.forEach((v) => {
     applicationhanders[v.type] = new ApplicationHandler(v);
   });
+});
+
+client.on("message", (message) => {
+  if (!message.content || message.author.bot) {
+    return;
+  }
 });
 
 client.login(config.discord.token);

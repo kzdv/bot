@@ -79,7 +79,7 @@ class GoogleAPI {
           ]
         }
       });
-    } catch (err: any) {
+    } catch (err) {
       Log.error(`Error deleting row ${id} from ${docId}: ${err} - ${JSON.stringify(err.response.data)}`);
       Log.error(err.stack);
     }

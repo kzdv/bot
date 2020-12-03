@@ -2,7 +2,7 @@ import csvParser from "csv-parser";
 import toReadableStream from "to-readable-stream";
 import getStream from "get-stream";
 
-import { googleapi, guild } from "./index";
+import { googleapi, guild } from "../index";
 import Log from "./Log";
 import LiveEmbed from "./LiveEmbed";
 import Utils from "./Utils";

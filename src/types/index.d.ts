@@ -1,6 +1,7 @@
 declare interface Config {
   discord: {
     token: string;
+    commandChanne: string;
   };
   applications: ApplicationConfig[];
   googleapi: {
@@ -32,4 +33,11 @@ declare interface ApplicationData {
   name: string;
   channel: string;
   applications: { [key: string]: string }[];
+}
+
+declare namespace Command {
+  interface Options {
+    command: string;
+    roles: string[];
+  }
 }
