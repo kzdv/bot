@@ -16,7 +16,7 @@ export default class HelpCommand extends Command {
   async handle(message: Discord.Message, args: string[]) {
     const embed = new MessageEmbed();
     embed
-      .setTitle("MASTER CONTROL PANEL HELP")
+      .setTitle("MASTER CONTROL PROGRAM HELP")
       .setDescription("PREFIX: TAG MASTER CONTROL PROGRAM")
       .setFooter("END OF LINE.")
       .setColor(message.guild.me.displayHexColor);
