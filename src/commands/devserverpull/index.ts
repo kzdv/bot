@@ -6,7 +6,7 @@ import Discord from "discord.js";
 export default class DevServerRestart extends Command {
   constructor(client: Discord.Client) {
     super(client, {
-      command: "REQUEST GIT PULL OF DEV SERVER",
+      command: "request git pull of dev server",
       roles: [
         "768615611449737217" // Developer
       ]
@@ -15,7 +15,12 @@ export default class DevServerRestart extends Command {
 
   handle(message: Discord.Message, args: string[]): void {
     message.channel.send("WILL START THE GIT PULL PROCESS. STAND BY.");
-    ChildProcess.execSync("/home/daniel/apps/mcp/bin/gitpull-dev.sh");
-    message.channel.send("PULL COMPLETED. END OF LINE.");
+    try {
+      ChildProcess.execSync("/home/daniel/apps/mcp/bin/gitpull-dev.sh");
+      message.channel.send("PULL COMPLETE.");
+    } catch(err) {
+      message.channel.send(`COMMAND FAILED TO EXECUTE.`)
+    }
+    message.channel.send("END OF LINE.");
   }
 }

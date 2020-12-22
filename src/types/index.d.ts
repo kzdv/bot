@@ -1,3 +1,10 @@
+declare namespace NodeJS {
+  export interface Global {
+    __version: string;
+    __basedir: string;
+  }
+}
+
 declare interface Config {
   discord: {
     token: string;

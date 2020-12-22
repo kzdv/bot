@@ -4,21 +4,25 @@ import path from "path";
 import ApplicationHandler from "./lib/ApplicationHandler";
 import GoogleAPI from "./lib/GoogleAPI";
 import Log from "./lib/Log";
+import Client from "./lib/Client";
 
 if (!fs.existsSync(path.resolve("config.json"))) {
   Log.error("Config not found");
   process.exit(1);
 }
 
+global.__version = "0.99.3";
+global.__basedir = __dirname;
+
 const config: Config = JSON.parse(fs.readFileSync(path.resolve("config.json")).toString());
 
-const client = new Discord.Client();
+const client = new Client();
 const googleapi = new GoogleAPI(config.googleapi);
 let guild: Discord.Guild;
 googleapi.authentication();
 const applicationhanders = {};
 
-Log.info("MASTER CONTROL PROGRAM");
+Log.info(`MASTER CONTROL PROGRAM ${global.__version}`);
 
 client.on("ready", async () => {
   Log.info(`Logged in as ${client.user.tag}`);
@@ -29,11 +33,8 @@ client.on("ready", async () => {
   });
 });
 
-client.on("message", (message) => {
-  if (!message.content || message.author.bot) {
-    return;
-  }
-});
+client.loadEvents("./events");
+client.loadCommands("./commands");
 
 client.login(config.discord.token);
 

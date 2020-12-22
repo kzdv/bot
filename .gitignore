@@ -1,4 +1,4 @@
 dist
 config.json
 node_modules
-log.txt
+log*.txt

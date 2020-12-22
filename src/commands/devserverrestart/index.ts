@@ -6,7 +6,7 @@ import Discord from "discord.js";
 export default class DevServerRestart extends Command {
   constructor(client: Discord.Client) {
     super(client, {
-      command: "REQUEST RESTART OF DEV SERVER",
+      command: "request restart of dev server",
       roles: [
         "766323246144290848", // Admininistrator
         "766344436699365396", // Moderator
@@ -20,6 +20,6 @@ export default class DevServerRestart extends Command {
     ChildProcess.execSync("/home/daniel/apps/mcp/bin/stop-dev.sh && sleep 5");
     message.channel.send("STARTING THE DEV SERVER.");
     ChildProcess.execSync("/home/daniel/apps/mcp/bin/start-dev.sh");
-    message.channel.send("THE DEV SERVER IS SYNCING TO GITLAB AND STARTING AND WILL BE ONLINE SHORTLY. END OF LINE.");
+    message.channel.send("THE DEV SERVER IS SYNCING TO GITLAB AND STARTING. IT WILL BE ONLINE SHORTLY. END OF LINE.");
   }
 }

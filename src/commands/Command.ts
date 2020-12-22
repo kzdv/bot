@@ -19,6 +19,7 @@ class Command {
   checkPermissions(message: Discord.Message, ownerOverride = true): boolean {
     let matched = false;
     this.roles.forEach((v) => {
+      if (v.toLowerCase() === "everyone") matched = true;
       if (message.member.roles.cache.has(v)) matched = true;
     });
     return matched;
@@ -30,7 +31,7 @@ class Command {
       throw new TypeError(fail);
     }
 
-    if (options.roles === undefined || Array.isArray(options.roles)) {
+    if (options.roles === undefined || !Array.isArray(options.roles)) {
       let fail = "Cannot register command: command received without a valid roles array";
       throw new TypeError(fail);
     }

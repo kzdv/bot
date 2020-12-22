@@ -6,7 +6,7 @@ class Log {
   static write(message: string, error: boolean | null): void {
     const d = new Date();
     const today = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
-    if (today !== this.lastDate && fs.existsSync("log.txt")) {
+    if (this.lastDate && today !== this.lastDate && fs.existsSync("log.txt")) {
       fs.renameSync("log.txt", `log-${this.lastDate}.txt`);
       this.lastDate = today;
     }
