@@ -13,8 +13,8 @@ export default class DevServerRestart extends Command {
     });
   }
 
-  handle(message: Discord.Message, args: string[]): void {
-    message.channel.send("WILL START THE GIT PULL PROCESS. STAND BY.");
+  async handle(message: Discord.Message, args: string[]): Promise<void> {
+    await message.channel.send("WILL START THE GIT PULL PROCESS. STAND BY.");
     try {
       ChildProcess.execSync("/home/daniel/apps/mcp/bin/gitpull-dev.sh");
       message.channel.send("PULL COMPLETE.");
