@@ -45,6 +45,8 @@ declare interface ApplicationData {
 declare namespace Command {
   interface Options {
     command: string;
+    alias?: string;
+    description: string;
     roles: string[];
   }
 }

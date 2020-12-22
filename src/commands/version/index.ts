@@ -5,6 +5,8 @@ export default class VersionCommand extends Command {
   constructor(client: Discord.Client) {
     super(client, {
       command: "request version information",
+      alias: "version",
+      description: "MCP Version information",
       roles: [
         "everyone"
       ]

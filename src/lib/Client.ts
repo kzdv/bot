@@ -6,10 +6,14 @@ import { resolve, join } from "path";
 
 export default class Client extends Discord.Client {
   commands: Discord.Collection<string, Command>;
+  aliases: Discord.Collection<string, Command>;
+
   constructor(options?) {
     super(options);
     this.commands = new Discord.Collection();
+    this.aliases = new Discord.Collection();
   }
+
   loadCommands(path) {
     Log.info("Loading commands...");
     readdirSync(resolve(global.__basedir, path)).filter(f => !f.endsWith(".js") && !f.endsWith(".map")).forEach(dir => {
@@ -20,6 +24,9 @@ export default class Client extends Discord.Client {
         if (command.command) {
           Log.info(`Loaded command: ${command.command}`)
           this.commands.set(command.command, command);
+          if (command.alias) {
+            this.aliases.set(command.alias, command);
+          }
         } else {
           Log.info(`Problem while loading ${join(path, dir, f)}, doesn't appear to be a valid command file.`);
         }
@@ -27,6 +34,7 @@ export default class Client extends Discord.Client {
     });
     return this;
   }
+
   loadEvents(path) {
     readdirSync(resolve(global.__basedir, path)).filter(f => f.endsWith(".js")).forEach(file => {
       const event = require(resolve(global.__basedir, join(path, file)));

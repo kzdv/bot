@@ -7,6 +7,7 @@ export default class DevServerRestart extends Command {
   constructor(client: Discord.Client) {
     super(client, {
       command: "request restart of dev server",
+      description: "Restarts Dev Server",
       roles: [
         "766323246144290848", // Admininistrator
         "766344436699365396", // Moderator

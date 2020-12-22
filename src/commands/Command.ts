@@ -3,12 +3,16 @@ import Discord from "discord.js";
 class Command {
   client: Discord.Client;
   command: string;
+  description: string;
   roles: string[];
+  alias: string;
 
   constructor(client: Discord.Client, options: Command.Options) {
     this.validateOptions(options)
     this.client = client;
     this.command = options.command;
+    this.alias = options.alias;
+    this.description = options.description;
     this.roles = options.roles;
   }
 

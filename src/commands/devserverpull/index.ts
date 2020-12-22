@@ -7,6 +7,7 @@ export default class DevServerRestart extends Command {
   constructor(client: Discord.Client) {
     super(client, {
       command: "request git pull of dev server",
+      description: "Runs git pull on dev resources",
       roles: [
         "768615611449737217" // Developer
       ]
