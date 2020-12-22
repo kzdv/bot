@@ -15,7 +15,7 @@
   "author": "Daniel A. Hawton <daniel@hawton.com>",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "babel-preset-minify": "^0.5.1",
     "csv-parse": "^4.14.2",
     "csv-parser": "^3.0.0",
