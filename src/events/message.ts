@@ -26,6 +26,8 @@ export default function (client: Client, message: Discord.Message) {
       } else {
         command.handle(message, args);
       }
+    } else {
+      message.channel.send(`<@${message.author.id}> I DON'T KNOW HOW TO DO THAT. END OF LINE.`);
     }
   }
 };

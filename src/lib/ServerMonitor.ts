@@ -9,7 +9,8 @@ export default class ServerMonitor {
 
   constructor(config: SMConfig) {
     this.config = config;
-    setInterval(this.handleCheck, 5*60*1000);
+Log.info(`Configuring for: ${JSON.stringify(this.config)}`);
+    setInterval(this.handleCheck.bind(this), 5*60*1000);
   }
 
   async handleCheck(): Promise<void> {
