@@ -23,6 +23,14 @@ declare interface Config {
     auth_provider_x509_cert_url: string;
     client_x509_cert_url: string;
   };
+  serverMonitor: SMConfig[];
+}
+
+declare interface SMConfig {
+  ip: string;
+  port: number;
+  restartTimes: number[];
+  restartCmd: string;
 }
 
 declare interface ApplicationConfig {

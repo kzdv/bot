@@ -27,5 +27,13 @@
     "token_uri": "",
     "auth_provider_x509_cert_url": "",
     "client_x509_cert_url": ""
-  }
+  },
+  "serverMonitor": [
+    {
+      "restartTimes": [2, 14],
+      "ip": "",
+      "port": 0,
+      "restartCmd": ""
+    }
+  ]
 }
