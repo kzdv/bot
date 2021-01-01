@@ -12,7 +12,6 @@ export default class HelpCommand extends Command {
       command: "set job",
       description: "Set job (set job <id> <job> <grade>)",
       roles: [
-        "everyone",
         "766323246144290848",
         "766344624141893642",
         "766344693679521842",
