@@ -3,10 +3,15 @@ import { readdirSync } from "fs";
 import Command from "../commands/Command";
 import Log from "./Log";
 import { resolve, join } from "path";
+import Database from "./Database";
+import Rcon from "rcon";
 
 export default class Client extends Discord.Client {
   commands: Discord.Collection<string, Command>;
   aliases: Discord.Collection<string, Command>;
+  db: Database;
+  rconconfig: RconConfig;
+  rcon: Rcon;
 
   constructor(options?) {
     super(options);
@@ -44,5 +49,25 @@ export default class Client extends Discord.Client {
       Log.info(`Loaded event: ${eventName}`);
     });
     return this;
+  }
+
+  loadDatabase(config: DBConfig) {
+    this.db = new Database(config);
+  }
+
+  setRconConfig(config: RconConfig) {
+    this.rconconfig = config;
+    Log.info(`Setting up rcon with: ${JSON.stringify(config)}`);
+    this.rcon = new Rcon(config.host, config.port, config.password, { tcp: false, challenge: false });
+    this.rcon.on("response", function(str) {
+      Log.info(`Rcon response: ${str}`);
+    });
+    this.rcon.on("end", () => {
+      Log.info(`Lost rcon connection, reopening...`);
+      this.setRconConfig(config);
+    });
+    this.rcon.on("auth", () => {
+      Log.info(`Got rcon auth emit`);
+    });
   }
 }

@@ -11,6 +11,8 @@ declare interface Config {
     commandChanne: string;
   };
   applications: ApplicationConfig[];
+  database: DBConfig;
+  rcon: RconConfig;
   googleapi: {
     type: string;
     project_id: string;
@@ -41,6 +43,20 @@ declare interface ApplicationConfig {
     column: number;
     values: { [key: string]: string } | string;
   };
+}
+
+declare interface DBConfig {
+  host: string;
+  port: number;
+  username: string;
+  password: string;
+  database: string;
+}
+
+declare interface RconConfig {
+  host: string;
+  port: number;
+  password: string;
 }
 
 declare interface ApplicationData {

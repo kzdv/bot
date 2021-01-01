@@ -16,6 +16,13 @@
       }
     }
   ],
+  "database": {
+    "host": "",
+    "port": 3306,
+    "username": "root",
+    "password": "secret12345",
+    "database": "vbrp"
+  },
   "googleapi": {
     "type": "",
     "project_id": "",

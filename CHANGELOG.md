@@ -1,3 +1,7 @@
+1.1.0 - 2021-01-01
+- Show job and job ranks from db
+- Add support for setting jobs from Discord
+
 1.0.0 - 2020-12-24
 - Added ServerMonitor class for monitoring FiveM servers and handling automatic restarts
 

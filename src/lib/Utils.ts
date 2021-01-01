@@ -1,4 +1,7 @@
 import Discord from "discord.js";
+import Client from "./Client";
+import Rcon from "rcon";
+import Log from "./Log";
 
 class Utils {
   static isVBRP(details: string): boolean {
@@ -18,6 +21,11 @@ class Utils {
     const channel = guild.channels.cache.find((ch) => (ch.name === announceChannel || ch.id === announceChannel));
     if (!channel) return;
     (channel as Discord.TextChannel).send(msg, { embed: embeddedmsg });
+  }
+
+  static sendRconMessage(client: Client, msg: string) {
+    client.rcon.connect();
+    client.rcon.send(msg);
   }
 }
 

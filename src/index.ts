@@ -12,7 +12,7 @@ if (!fs.existsSync(path.resolve("config.json"))) {
   process.exit(1);
 }
 
-global.__version = "1.0.0";
+global.__version = "1.1.0";
 global.__basedir = __dirname;
 
 const config: Config = JSON.parse(fs.readFileSync(path.resolve("config.json")).toString());
@@ -43,6 +43,8 @@ client.on("ready", async () => {
 
 client.loadEvents("./events");
 client.loadCommands("./commands");
+client.loadDatabase(config.database);
+client.setRconConfig(config.rcon);
 
 client.login(config.discord.token);
 
