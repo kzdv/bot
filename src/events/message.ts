@@ -13,7 +13,7 @@ export default function (client: Client, message: Discord.Message) {
     return;
   }
 
-  const prefixRegex = new RegExp(`^(<@!?${client.user.id}>)\\s*`);
+  const prefixRegex = new RegExp(`^(<@!?&?${client.user.id}>)\\s*`);
   if (prefixRegex.test(message.content)) {
     const [, match] = message.content.match(prefixRegex);
     const args = message.content.slice(match.length).trim().split(/ +/g);

@@ -28,7 +28,7 @@ export default class HelpCommand extends Command {
       return;
     }
     this.client.rcon.connect();
-    this.client.rcon.send(`setjob ${args[0]} ${args[1]} ${args[2]}`);
+    this.client.rcon.send(`setjob ${args[0]} ${args[1].toLowerCase()} ${args[2]}`);
     Log.info(`Setting job for ${args[0]} to ${args[1]} ${args[2]}, requested by ${message.author.tag}`);
     message.channel.send("REQUEST SENT TO SERVER. END OF LINE.");
   }
