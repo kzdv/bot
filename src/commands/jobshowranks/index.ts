@@ -31,7 +31,7 @@ export default class HelpCommand extends Command {
       .setFooter("END OF LINE.")
       .setColor(message.guild.me.displayHexColor);
     let jobs = [];
-    this.client.db.getPool().execute("SELECT `grade`,`name`,`label` FROM job_grades WHERE `job_name`=? ORDER BY `grade`", [args[0]], (err, rows) => {
+    this.client.db.getPool().execute("SELECT `grade`,`name`,`label`,`salary` FROM job_grades WHERE `job_name`=? ORDER BY `grade`", [args[0]], (err, rows) => {
       if (err) {
         message.channel.send("Could not query database.");
         Log.error(`Error querying jobs table: ${err.message}`);
@@ -40,8 +40,8 @@ export default class HelpCommand extends Command {
       }
       let count = 0;
       let group = 1;
-      (rows as any).forEach((job: {grade: number, name: string, label: string}) => {
-        const msg = `\`${job.grade}\` = ${job.label}`;
+      (rows as any).forEach((job: {grade: number, name: string, label: string, salary: number}) => {
+        const msg = `\`${job.grade}\` = ${job.label} - $${job.salary}`;
         if (count + msg.length > 1024) {
           embed.addField(`Ranks for ${args[0]} #${group}`, jobs);
           jobs = [];
