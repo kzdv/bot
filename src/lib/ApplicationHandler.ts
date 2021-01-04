@@ -48,7 +48,8 @@ class ApplicationHandler {
             let batchNo = 1;
             let batch = [];
             let batchQuestions = [];
-            v.forEach((answer,index) => {
+            for(let index=0, len=v.length; index < len; index++) {
+              let answer = v[index];
               count += answer.length + appquestions[index].length;
               batch.push(answer);
               batchQuestions.push(appquestions[index]);
@@ -60,7 +61,7 @@ class ApplicationHandler {
                 batch = [];
                 batchQuestions = [];
               }
-            });
+            };
             if (batch.length > 0) {
               let msg = LiveEmbed.createFromApplication(this.config.type, batchQuestions, batch);
               Utils.sendMessage(guild, channel, `${batchNo == 1 ? 'NEW APPLICATION RECEIVED' : 'APP CONTINUED (Part ' + batchNo + ')'} :`, msg);
