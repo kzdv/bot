@@ -1,3 +1,6 @@
+1.1.3 - 2021-01-04
+- Split really long messages
+
 1.1.2 - 2021-01-03
 - Log commands received from ems-command to troubleshoot why K's messages are being ignored
 - Removed old debug information

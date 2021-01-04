@@ -12,7 +12,7 @@ if (!fs.existsSync(path.resolve("config.json"))) {
   process.exit(1);
 }
 
-global.__version = "1.1.2";
+global.__version = "1.1.3";
 global.__basedir = __dirname;
 
 const config: Config = JSON.parse(fs.readFileSync(path.resolve("config.json")).toString());

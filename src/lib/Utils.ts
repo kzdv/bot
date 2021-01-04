@@ -20,7 +20,7 @@ class Utils {
   ): void {
     const channel = guild.channels.cache.find((ch) => (ch.name === announceChannel || ch.id === announceChannel));
     if (!channel) return;
-    (channel as Discord.TextChannel).send(msg, { embed: embeddedmsg });
+    (channel as Discord.TextChannel).send(msg, { embed: embeddedmsg, split: true });
   }
 
   static sendRconMessage(client: Client, msg: string) {
