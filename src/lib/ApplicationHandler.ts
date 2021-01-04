@@ -44,8 +44,27 @@ class ApplicationHandler {
         } else {
           const channel = this.findChannel(v);
           if (channel !== null) {
-            let msg = LiveEmbed.createFromApplication(this.config.type, appquestions, v);
-            Utils.sendMessage(guild, channel, `NEW APPLICATION RECEIVED:`, msg);
+            let count = 0;
+            let batchNo = 1;
+            let batch = [];
+            let batchQuestions = [];
+            v.forEach((answer,index) => {
+              count += answer.length + appquestions[index].length;
+              batch.push(answer);
+              batchQuestions.push(appquestions[index]);
+              if (count > 800) {
+                let msg = LiveEmbed.createFromApplication(this.config.type, batchQuestions, batch);
+                Utils.sendMessage(guild, channel, `${batchNo == 1 ? 'NEW APPLICATION RECEIVED' : 'APP CONTINUED'} (Part ${batchNo}):`, msg);
+                batchNo += 1;
+                count = 0;
+                batch = [];
+                batchQuestions = [];
+              }
+            });
+            if (batch.length > 0) {
+              let msg = LiveEmbed.createFromApplication(this.config.type, batchQuestions, batch);
+              Utils.sendMessage(guild, channel, `${batchNo == 1 ? 'NEW APPLICATION RECEIVED' : 'APP CONTINUED (Part ' + batchNo + ')'} :`, msg);
+            }
             googleapi.deleteRow(idx, this.config.docId, this.config.sheetId);
           }
         }
