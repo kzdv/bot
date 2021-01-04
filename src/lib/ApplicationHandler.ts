@@ -44,9 +44,9 @@ class ApplicationHandler {
         } else {
           const channel = this.findChannel(v);
           if (channel !== null) {
-            googleapi.deleteRow(idx, this.config.docId, this.config.sheetId);
             let msg = LiveEmbed.createFromApplication(this.config.type, appquestions, v);
             Utils.sendMessage(guild, channel, `NEW APPLICATION RECEIVED:`, msg);
+            googleapi.deleteRow(idx, this.config.docId, this.config.sheetId);
           }
         }
       });

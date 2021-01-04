@@ -14,6 +14,11 @@ export default function (client: Client, message: Discord.Message) {
   }
 
   const prefixRegex = new RegExp(`^(<@!?&?${client.user.id}>)\\s*`);
+  // Log messages from ems command
+  if (message.channel.id === "766348008031387758") {
+    Log.info(message.content);
+  }
+
   if (prefixRegex.test(message.content)) {
     const [, match] = message.content.match(prefixRegex);
     const args = message.content.slice(match.length).trim().split(/ +/g);

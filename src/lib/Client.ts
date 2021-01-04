@@ -57,7 +57,7 @@ export default class Client extends Discord.Client {
 
   setRconConfig(config: RconConfig) {
     this.rconconfig = config;
-    Log.info(`Setting up rcon with: ${JSON.stringify(config)}`);
+    Log.info(`Setting up rcon`);
     this.rcon = new Rcon(config.host, config.port, config.password, { tcp: false, challenge: false });
     this.rcon.on("response", function(str) {
       Log.info(`Rcon response: ${str}`);

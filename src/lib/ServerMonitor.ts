@@ -9,7 +9,6 @@ export default class ServerMonitor {
 
   constructor(config: SMConfig) {
     this.config = config;
-Log.info(`Configuring for: ${JSON.stringify(this.config)}`);
     setInterval(this.handleCheck.bind(this), 5*60*1000);
   }
 
