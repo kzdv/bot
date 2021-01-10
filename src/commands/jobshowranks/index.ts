@@ -38,6 +38,10 @@ export default class HelpCommand extends Command {
         console.trace();
         return;
       }
+      if (rows.length < 1) {
+        message.channel.send("Invalid job or no ranks found.");
+        return;
+      }
       let count = 0;
       let group = 1;
       (rows as any).forEach((job: {grade: number, name: string, label: string, salary: number}) => {
