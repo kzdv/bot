@@ -7,7 +7,7 @@ class LiveEmbed {
     msgEmbed.setColor("#ff0000");
     msgEmbed.setTitle(`APPLICATION TYPE: ${apptype.toUpperCase()}`);
     appquestions.forEach((_,idx) => {
-      msgEmbed.addField(appquestions[idx], appdata[idx] || "Blank", false);
+      msgEmbed.addField(appquestions[idx], (appdata[idx] == null || appdata[idx] == "") ? "Blank" : appdata[idx], false);
     });
     msgEmbed.setFooter("END OF LINE.");
     return msgEmbed;
