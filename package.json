@@ -17,7 +17,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "babel-preset-minify": "^0.5.1",
-    "csv-parse": "^4.14.2",
+    "csv-parse": "^4.15.0",
     "csv-parser": "^3.0.0",
     "discord.js": "^12.5.1",
     "get-stream": "^6.0.0",
