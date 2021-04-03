@@ -44,7 +44,7 @@ export default async function (client: Client, message: Discord.Message) {
         });
         let resp = res.data.response;
         if (resp === "%{UNKNOWN}%") {
-          message.channel.send(`<@${message.author.id}> I'm sorry, I didn't understand you.`);
+          message.channel.send(`I'm sorry, I didn't understand you.`);
         } else if (resp == "%{RESTART DEV}%") {
           // Soon
         } else if (resp == "%{RESTART STAGE}%") {
@@ -54,10 +54,10 @@ export default async function (client: Client, message: Discord.Message) {
         } else if (resp == "%{GITPULL STAGE}%") {
           // Soon
         } else {
-          message.channel.send(`<@${message.author.id}> ${resp}`);
+          message.channel.send(`${resp}`);
         }
       } catch(e) {
-        message.channel.send(`<@${message.author.id}> I DON'T KNOW HOW TO DO THAT. END OF LINE.`);
+        message.channel.send(`I don't know how to do that and my brain doesn't appear to be working right now.`);
         Log.error(`Exception querying chatbot: ${e}`);
         console.trace();
       }
