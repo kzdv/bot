@@ -38,7 +38,7 @@ export default class HelpCommand extends Command {
         console.trace();
         return;
       }
-      if (rows.length < 1) {
+      if ((rows as any).length < 1) {
         message.channel.send("Invalid job or no ranks found.");
         return;
       }
