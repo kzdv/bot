@@ -19,7 +19,7 @@
     "babel-preset-minify": "^0.5.1",
     "csv-parse": "^4.15.3",
     "csv-parser": "^3.0.0",
-    "discord.js": "^12.5.1",
+    "discord.js": "^12.5.3",
     "get-stream": "^6.0.0",
     "google-auth-library": "^7.0.3",
     "googleapis": "70",
