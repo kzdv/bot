@@ -1,8 +1,9 @@
 import Discord from "discord.js";
 import Client from "../lib/Client";
 import Log from "../lib/Log";
+import axios, { AxiosAdapter, AxiosResponse } from "axios";
 
-export default function (client: Client, message: Discord.Message) {
+export default async function (client: Client, message: Discord.Message) {
   if (message.author.bot) return;
 
   if (message.channel.type === "dm") {
@@ -32,7 +33,34 @@ export default function (client: Client, message: Discord.Message) {
         command.handle(message, message.content.slice(match.length).trim().split(/ +/g));
       }
     } else {
-      message.channel.send(`<@${message.author.id}> I DON'T KNOW HOW TO DO THAT. END OF LINE.`);
+      let res: AxiosResponse;
+      try {
+        res = await axios({
+          method: "POST",
+          url: `http://lv2.vbrp.org/chatbot`,
+          data: {
+            req: msg
+          }
+        });
+        let resp = res.data.response;
+        if (resp === "%{UNKNOWN}%") {
+          message.channel.send(`<@${message.author.id}> I'm sorry, I didn't understand you.`);
+        } else if (resp == "%{RESTART DEV}%") {
+          // Soon
+        } else if (resp == "%{RESTART STAGE}%") {
+          // Soon
+        } else if (resp == "%{GITPULL DEV}%") {
+          // Soon
+        } else if (resp == "%{GITPULL STAGE}%") {
+          // Soon
+        } else {
+          message.channel.send(`<@${message.author.id}> ${resp}`);
+        }
+      } catch(e) {
+        message.channel.send(`<@${message.author.id}> I DON'T KNOW HOW TO DO THAT. END OF LINE.`);
+        Log.error(`Exception querying chatbot: ${e}`);
+        console.trace();
+      }
     }
   }
 };
