@@ -43,15 +43,15 @@ export default async function (client: Client, message: Discord.Message) {
           }
         });
         let resp = res.data.response;
-        if (resp === "%{UNKNOWN}%") {
+        if (resp === "%{UNKNOWN}") {
           message.channel.send(`I'm sorry, I didn't understand you.`);
-        } else if (resp == "%{RESTART DEV}%") {
+        } else if (resp == "%{RESTART DEV}") {
           // Soon
-        } else if (resp == "%{RESTART STAGE}%") {
+        } else if (resp == "%{RESTART STAGE}") {
           // Soon
-        } else if (resp == "%{GITPULL DEV}%") {
+        } else if (resp == "%{GITPULL DEV}") {
           // Soon
-        } else if (resp == "%{GITPULL STAGE}%") {
+        } else if (resp == "%{GITPULL STAGE}") {
           // Soon
         } else {
           message.channel.send(`${resp}`);
