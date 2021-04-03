@@ -28,7 +28,7 @@ export default class HelpCommand extends Command {
     }
 
     let jobs = [];
-    this.client.db.getPool().execute("SELECT u.identifier AS identifier, ov.plate AS plate, ov.garage AS garage, ov.state AS state, u.firstname AS fname, u.lastname AS lname FROM owned_vehicles AS ov, users AS u WHERE ov.plate=? AND ov.owner=u.identifier", [args[0]], (err, rows) => {
+    this.client.db.getPool().execute("SELECT u.identifier AS identifier, ov.plate AS plate, ov.garage AS garage, ov.state AS state, u.firstname AS fname, u.lastname AS lname FROM owned_vehicles AS ov, users AS u WHERE ov.plate LIKE ? AND ov.owner=u.identifier", [args[0]], (err, rows) => {
       message.channel.send("MASTER CONTROL PROGRAM: SAN ANDREAS DEPARTMENT OF MOTOR VEHICLE INFORMATION:")
       if (err) {
         message.channel.send("UNABLE TO QUERY DATABASE. END OF LINE.");
