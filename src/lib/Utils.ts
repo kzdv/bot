@@ -4,6 +4,21 @@ import Rcon from "rcon";
 import Log from "./Log";
 
 class Utils {
+  static linkDiscord(client: Client, message: Discord.Message, data: DiscordLink): void {
+    const license = data.license.replace("license:", "");
+    const username = client.users.cache.get(data.discord);
+
+    client.db.getPool().execute("UPDATE `users` SET `discord`=?, `discordid`=? WHERE `identifier`=?", [username, data.discord, data.license], (err) => {
+      if (err) {
+        message.channel.send("Could not query database.");
+        Log.error(`Error updating discord information: ${err.message}`);
+        console.trace();
+        return;
+      }
+      message.delete();
+    });
+  }
+
   static isVBRP(details: string): boolean {
     if (details.indexOf("VBRP") !== -1 || details.indexOf("Vespucci Beach") !== -1) {
       return true;

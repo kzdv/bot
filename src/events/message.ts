@@ -2,6 +2,7 @@ import Discord from "discord.js";
 import Client from "../lib/Client";
 import Log from "../lib/Log";
 import axios, { AxiosAdapter, AxiosResponse } from "axios";
+import Utils from "../lib/Utils";
 
 export default async function (client: Client, message: Discord.Message) {
   if (message.author.bot) return;
@@ -16,8 +17,12 @@ export default async function (client: Client, message: Discord.Message) {
 
   const prefixRegex = new RegExp(`^(<@!?&?${client.user.id}>)\\s*`);
   // Log messages from ems command
-  if (message.channel.id === "766348008031387758") {
-    Log.info(message.content);
+  if (message.channel.id === "834636255735840818") {
+    const data: DiscordLink = JSON.parse(message.content);
+    if (data.type === "Connecting") {
+      Utils.linkDiscord(client, message, data);
+    }
+    return;
   }
 
   if (prefixRegex.test(message.content)) {

@@ -19,10 +19,22 @@ export default class DevServerRestart extends Command {
     args = args.slice(this.command.split(" ").length);
     if (!args[0]) {
       count = parseInt(args[0]) + 1;
-      if (count > 100) count = 100;
     } else {
       count = 11;
     }
-    (message.channel as TextChannel).bulkDelete(count);
+    if (count <= 100) {
+      (message.channel as TextChannel).bulkDelete(count);
+    } else {
+      while (count > 0) {
+        let batch = count;
+        if (batch < 100) { batch = 100; }
+
+        (message.channel as TextChannel).bulkDelete(batch);
+
+        count -= batch;
+        
+        await new Promise(r => setTimeout(r, 250));
+      }
+    }
   }
 }

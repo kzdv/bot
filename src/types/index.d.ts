@@ -28,6 +28,12 @@ declare interface Config {
   serverMonitor: SMConfig[];
 }
 
+declare interface DiscordLink {
+  type: string;
+  license: string;
+  discord: string;
+}
+
 declare interface SMConfig {
   ip: string;
   port: number;
