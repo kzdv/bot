@@ -4,9 +4,10 @@ import Rcon from "rcon";
 import Log from "./Log";
 
 class Utils {
-  static linkDiscord(client: Client, message: Discord.Message, data: DiscordLink): void {
+  static async linkDiscord(client: Client, message: Discord.Message, data: DiscordLink): Promise<void> {
     const license = "%" + data.license.replace("license:", "");
-    const username = client.users.cache.get(data.discord).tag;
+    await client.users.fetch(data.discord);
+    let username = client.users.cache.get(data.discord)?.tag || "";
 
     client.db.getPool().execute("UPDATE `users` SET `discord`=?, `discordid`=? WHERE `identifier` LIKE ?", [username, data.discord, license], (err) => {
       if (err) {
