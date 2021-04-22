@@ -8,7 +8,7 @@ class Utils {
     const license = "%" + data.license.replace("license:", "");
     const username = client.users.cache.get(data.discord).tag;
 
-    client.db.getPool().execute("UPDATE `users` SET `discord`=?, `discordid`=? WHERE `identifier` LIKE ?", [username, parseInt(data.discord), license], (err) => {
+    client.db.getPool().execute("UPDATE `users` SET `discord`=?, `discordid`=? WHERE `identifier` LIKE ?", [username, data.discord, license], (err) => {
       if (err) {
         message.channel.send("Could not query database.");
         Log.error(`Error updating discord information: ${err.message}`);
