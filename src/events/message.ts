@@ -18,11 +18,17 @@ export default async function (client: Client, message: Discord.Message) {
   const prefixRegex = new RegExp(`^(<@!?&?${client.user.id}>)\\s*`);
   // Log messages from ems command
   if (message.channel.id === "834636255735840818") {
-    const data: DiscordLink = JSON.parse(message.content);
-    if (data.type === "Connecting") {
-      Utils.linkDiscord(client, message, data);
+    let data: DiscordLink;
+    try {
+      data = JSON.parse(message.content);
+    } catch(e) {
+      // Not valid JSON, we'll treat like a normal message.
     }
-    return;
+
+    if (data && data.type === "Connecting") {
+      Utils.linkDiscord(client, message, data);
+      return;
+    }
   }
 
   if (prefixRegex.test(message.content)) {
