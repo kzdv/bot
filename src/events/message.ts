@@ -5,18 +5,6 @@ import axios, { AxiosAdapter, AxiosResponse } from "axios";
 import Utils from "../lib/Utils";
 
 export default async function (client: Client, message: Discord.Message) {
-  if (message.author.bot) return;
-
-  if (message.channel.type === "dm") {
-    // Only respond to version DMs, ignore the rest
-    if (message.content.toLowerCase() === "version") {
-      message.author.send(`MASTER CONTROL PROGRAM VERSION ${global.__version} BY DANIEL A. HAWTON. END OF LINE.`);
-    }
-    return;
-  }
-
-  const prefixRegex = new RegExp(`^(<@!?&?${client.user.id}>)\\s*`);
-  // Log messages from ems command
   if (message.channel.id === "834636255735840818") {
     let data: DiscordLink;
     try {
@@ -30,7 +18,18 @@ export default async function (client: Client, message: Discord.Message) {
       return;
     }
   }
+  // Since we're not in the link channel, ignore all others from bots
+  if (message.author.bot) return;
 
+  if (message.channel.type === "dm") {
+    // Only respond to version DMs, ignore the rest
+    if (message.content.toLowerCase() === "version") {
+      message.author.send(`MASTER CONTROL PROGRAM VERSION ${global.__version} BY DANIEL A. HAWTON. END OF LINE.`);
+    }
+    return;
+  }
+
+  const prefixRegex = new RegExp(`^(<@!?&?${client.user.id}>)\\s*`);
   if (prefixRegex.test(message.content)) {
     const [, match] = message.content.match(prefixRegex);
     const args = message.content.slice(match.length).trim().split(/ +/g);
