@@ -6,8 +6,8 @@ import Discord, { TextChannel } from "discord.js";
 export default class DevServerRestart extends Command {
   constructor(client: Discord.Client) {
     super(client, {
-      command: "clear",
-      description: "Clear last X messages (up to 100)",
+      command: "force clear",
+      description: "Force clear last X messages (up to 100), WARNING: SLOW!",
       roles: [
         "administrator"
       ]
@@ -20,19 +20,10 @@ export default class DevServerRestart extends Command {
       count = 11;
     }
 
-    if (count <= 100) {
-      (message.channel as TextChannel).bulkDelete(count, true);
-    } else {
-      while (count > 0) {
-        let batch = count;
-        if (batch < 100) { batch = 100; }
-
-        (message.channel as TextChannel).bulkDelete(batch, true);
-
-        count -= batch;
-        
-        await new Promise(r => setTimeout(r, 250));
-      }
-    }
+    (message.channel as TextChannel).messages.fetch({ limit: count }).then((messages) => {
+      messages.forEach((m) => {
+        m.delete();
+      });
+    });
   }
 }
