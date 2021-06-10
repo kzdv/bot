@@ -22,7 +22,7 @@
     "discord.js": "^12.5.3",
     "get-stream": "^6.0.0",
     "google-auth-library": "^7.0.3",
-    "googleapis": "70",
+    "googleapis": "76",
     "mysql2": "^2.2.5",
     "rcon": "^1.0.3",
     "to-readable-stream": "^2.1.0"
