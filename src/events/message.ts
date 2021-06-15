@@ -47,7 +47,7 @@ export default async function (client: Client, message: Discord.Message) {
       try {
         res = await axios({
           method: "POST",
-          url: `http://lv2.vbrp.org/chatbot`,
+          url: `http://lv2.vbrp.org:8011/chatbot`,
           data: {
             req: msg
           }
