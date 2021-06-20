@@ -12,6 +12,8 @@ export default class Client extends Discord.Client {
   db: Database;
   rconconfig: RconConfig;
   rcon: Rcon;
+  roleCache: roleCache;
+  ignoredRoleCache: roleCache;
 
   constructor(options?) {
     super(options);
@@ -53,21 +55,5 @@ export default class Client extends Discord.Client {
 
   loadDatabase(config: DBConfig) {
     this.db = new Database(config);
-  }
-
-  setRconConfig(config: RconConfig) {
-    this.rconconfig = config;
-    Log.info(`Setting up rcon`);
-    this.rcon = new Rcon(config.host, config.port, config.password, { tcp: false, challenge: false });
-    this.rcon.on("response", function(str) {
-      Log.info(`Rcon response: ${str}`);
-    });
-    this.rcon.on("end", () => {
-      Log.info(`Lost rcon connection, reopening...`);
-      this.setRconConfig(config);
-    });
-    this.rcon.on("auth", () => {
-      Log.info(`Got rcon auth emit`);
-    });
   }
 }

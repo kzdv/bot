@@ -1,13 +1,13 @@
 {
-  "name": "VBRP.MCP",
+  "name": "MCP",
   "version": "1.0.0",
-  "description": "VBRP Discord Bot",
+  "description": "Discord Bot",
   "main": "src/index.js",
   "scripts": {
     "lint": "eslint src --ext .js,.ts",
     "dev": "tsc-watch --project . --outDir ./dist --onSuccess \"nodemon ./dist/index.js\"",
     "build": "tsc -p .",
-    "prod": "node dist/index.js"
+    "prod": "sh config.json.sh && node dist/index.js"
   },
   "huskey": {
     "pre-commit": "yarn lint"
@@ -24,6 +24,7 @@
     "google-auth-library": "^7.0.3",
     "googleapis": "70",
     "mysql2": "^2.2.5",
+    "node-cron": "^3.0.0",
     "rcon": "^1.0.3",
     "to-readable-stream": "^2.1.0"
   },

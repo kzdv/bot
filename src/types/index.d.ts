@@ -8,24 +8,8 @@ declare namespace NodeJS {
 declare interface Config {
   discord: {
     token: string;
-    commandChanne: string;
   };
-  applications: ApplicationConfig[];
   database: DBConfig;
-  rcon: RconConfig;
-  googleapi: {
-    type: string;
-    project_id: string;
-    private_key_id: string;
-    private_key: string;
-    client_email: string;
-    client_id: string;
-    auth_uri: string;
-    token_uri: string;
-    auth_provider_x509_cert_url: string;
-    client_x509_cert_url: string;
-  };
-  serverMonitor: SMConfig[];
 }
 
 declare interface DiscordLink {
@@ -39,6 +23,10 @@ declare interface SMConfig {
   port: number;
   restartTimes: number[];
   restartCmd: string;
+}
+
+declare interface roleCache {
+  [key: string]: string
 }
 
 declare interface ApplicationConfig {

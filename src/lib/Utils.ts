@@ -1,33 +1,9 @@
-import Discord from "discord.js";
+import Discord, { GuildMember } from "discord.js";
 import Client from "./Client";
-import Rcon from "rcon";
+import Controller from "./Controller";
 import Log from "./Log";
 
 class Utils {
-  static async linkDiscord(client: Client, message: Discord.Message, data: DiscordLink): Promise<void> {
-    const license = "%" + data.license.replace("license:", "");
-    await client.users.fetch(data.discord);
-    let username = client.users.cache.get(data.discord)?.tag || "";
-
-    client.db.getPool().execute("UPDATE `users` SET `discord`=?, `discordid`=? WHERE `identifier` LIKE ?", [username, data.discord, license], (err) => {
-      if (err) {
-        message.channel.send("Could not query database.");
-        Log.error(`Error updating discord information: ${err.message}`);
-        console.trace();
-        return;
-      }
-      message.delete();
-    });
-  }
-
-  static isVBRP(details: string): boolean {
-    if (details.indexOf("VBRP") !== -1 || details.indexOf("Vespucci Beach") !== -1) {
-      return true;
-    }
-
-    return false;
-  }
-
   static sendMessage(
     guild: Discord.Guild,
     announceChannel: string,
@@ -42,6 +18,81 @@ class Utils {
   static sendRconMessage(client: Client, msg: string) {
     client.rcon.connect();
     client.rcon.send(msg);
+  }
+
+  // @TODO define type for controller
+  static VerifyRoles(client: Client, member: GuildMember, con: any) {
+    let shouldHaveRoles = [];
+    // Check guest, home, visitor
+    if (Controller.isHomeController(con)) {
+      shouldHaveRoles.push(client.roleCache["Home Controller"]);
+    } else if (Controller.isVisitor(con)) {
+      shouldHaveRoles.push(client.roleCache["Visiting Controller"]);
+    } else {
+      shouldHaveRoles.push(client.roleCache["ZDV Guest"]);
+    }
+
+    // Check roles -- Removed for now
+/*    if (Controller.isHomeController(con)) {
+      if (Controller.isSeniorStaff(con)) {
+        shouldHaveRoles.push(client.roleCache["ZDV Senior Staff"]);
+      } else if (Controller.isStaff(con)) {
+        shouldHaveRoles.push(client.roleCache["ZDV Staff"]);
+      }
+
+      if (Controller.hasRole(con, "MTR") || Controller.hasRole(con, "INS") || Controller.hasRole(con, "TA")) {
+        shouldHaveRoles.push(client.roleCache["Training Staff"]);
+      }
+
+      if (Controller.hasRole(con, "Web Team") || Controller.hasRole(con, "WM")) {
+        shouldHaveRoles.push(client.roleCache["Web Team"]);
+      }
+
+      if (Controller.hasRole(con, "Events Team") || Controller.hasRole(con, "EC")) {
+        shouldHaveRoles.push(client.roleCache["Event Team"]);
+      }
+
+      if (Controller.hasRole(con, "FE Team") || Controller.hasRole(con, "FE")) {
+        shouldHaveRoles.push(client.roleCache["FE Team"]);
+      }
+    }*/
+
+    // Rating push
+    let ratingrole = Object.keys(Controller.rating_to_role).find(k => Controller.rating_to_role[k] === con.rating_id-1);
+    shouldHaveRoles.push(client.roleCache[ratingrole]);
+
+    // Okay, now let's check their roles...
+    // Assign roles they should have
+    shouldHaveRoles.forEach(val => {
+      if (!member.roles.cache.has(val)) {
+        Log.info(`Member ${member.nickname} is missing role ${val}`);
+        member.roles.add(val);
+      }
+    });
+
+    // Now check roles they have to find ones they should not [but only ones we care about]
+    member.roles.cache.forEach(r => {
+      if (Object.values(client.roleCache).indexOf(r.id) > -1) {
+        if (!shouldHaveRoles.includes(r.id)) {
+          Log.info(`Member ${member.nickname} shouldn't have role ${r.name}`);
+          r.delete();
+        }
+      }
+    });
+
+    let ignore = false;
+    Object.keys(client.ignoredRoleCache).forEach(k => {
+      if (member.roles.cache.has(client.ignoredRoleCache[k])) ignore = true;
+    });
+
+    if (!ignore) {
+      let nickname = `${con.first_name} ${con.last_name} | ${Controller.getThirdArgument(con)}`;
+
+      if (member.nickname !== nickname) {
+        Log.info(`Member ${member.nickname} to be reset to ${nickname}`);
+        member.setNickname(nickname);
+      }
+    }
   }
 }
 

@@ -6,8 +6,8 @@ import Discord, { TextChannel } from "discord.js";
 export default class DevServerRestart extends Command {
   constructor(client: Discord.Client) {
     super(client, {
-      command: "force clear",
-      description: "Force clear last X messages, WARNING: SLOW!",
+      command: "reset channel",
+      description: "Will clone and destroy the channel command is run in",
       roles: [
         "administrator"
       ]
@@ -15,15 +15,7 @@ export default class DevServerRestart extends Command {
   }
 
   async handle(message: Discord.Message, args: string[]): Promise<void> {
-    let count = parseInt(args.slice(this.command.split(" ").length)[0]);
-    if (count == 0) {
-      count = 11;
-    }
-
-    (message.channel as TextChannel).messages.fetch({ limit: count }).then((messages) => {
-      messages.forEach((m) => {
-        m.delete();
-      });
-    });
+    await (message.channel as TextChannel).clone();
+    message.channel.delete();
   }
 }

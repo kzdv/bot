@@ -5,19 +5,6 @@ import axios, { AxiosAdapter, AxiosResponse } from "axios";
 import Utils from "../lib/Utils";
 
 export default async function (client: Client, message: Discord.Message) {
-  if (message.channel.id === "834636255735840818") {
-    let data: DiscordLink;
-    try {
-      data = JSON.parse(message.content);
-    } catch(e) {
-      // Not valid JSON, we'll treat like a normal message.
-    }
-
-    if (data && data.type === "Connecting") {
-      Utils.linkDiscord(client, message, data);
-      return;
-    }
-  }
   // Since we're not in the link channel, ignore all others from bots
   if (message.author.bot) return;
 
@@ -41,35 +28,6 @@ export default async function (client: Client, message: Discord.Message) {
         message.channel.send("YOU DO NOT HAVE ACCESS TO THIS REQUEST. END OF LINE.")
       } else {
         command.handle(message, message.content.slice(match.length).trim().split(/ +/g));
-      }
-    } else {
-      let res: AxiosResponse;
-      try {
-        res = await axios({
-          method: "POST",
-          url: `http://lv2.vbrp.org:8011/chatbot`,
-          data: {
-            req: msg
-          }
-        });
-        let resp = res.data.response;
-        if (resp === "%{UNKNOWN}") {
-          message.channel.send(`I'm sorry, I didn't understand you.`);
-        } else if (resp == "%{RESTART DEV}") {
-          // Soon
-        } else if (resp == "%{RESTART STAGE}") {
-          // Soon
-        } else if (resp == "%{GITPULL DEV}") {
-          // Soon
-        } else if (resp == "%{GITPULL STAGE}") {
-          // Soon
-        } else {
-          message.channel.send(`${resp}`);
-        }
-      } catch(e) {
-        message.channel.send(`I don't know how to do that and my brain doesn't appear to be working right now.`);
-        Log.error(`Exception querying chatbot: ${e}`);
-        console.trace();
       }
     }
   }
