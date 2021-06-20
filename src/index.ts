@@ -68,17 +68,23 @@ client.on("ready", async () => {
     }
   });
 
-  cron.schedule("0 * * * *", async () => {
-    await client.guilds.cache.first().roles.fetch(); // Update Role Cache
-    await client.guilds.cache.first().members.fetch(); // Update Member Cache
-    const data = (await axios.get("https://denartcc.org/getRoster")).data;
-    data.forEach(async (controller) => {
-      if (client.guilds.cache.first().members.cache.has(controller.discord)) {
-        let member = await client.guilds.cache.first().members.fetch(controller.discord);
-
-        Utils.VerifyRoles(client, member, controller);
-      }
-    });
+  let cronRunning = false;
+  cron.schedule("*/5 * * * *", async () => {
+    if (!cronRunning) {
+      cronRunning = true;
+      await client.guilds.cache.first().roles.fetch(); // Update Role Cache
+      await client.guilds.cache.first().members.fetch(); // Update Member Cache
+      const data = (await axios.get("https://denartcc.org/getRoster")).data;
+      let dealtWith = [];
+      data.forEach(async (controller) => {
+        if (client.guilds.cache.first().members.cache.has(controller.discord)) {
+          let member = await client.guilds.cache.first().members.fetch(controller.discord);
+          dealtWith.push(member.id);
+          Utils.VerifyRoles(client, member, controller);
+        }
+      });
+      cronRunning = false;
+    }
   });
 });
 
