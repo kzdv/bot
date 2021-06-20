@@ -83,6 +83,32 @@ client.on("ready", async () => {
           Utils.VerifyRoles(client, member, controller);
         }
       });
+      /*
+        Coming soon (TM)
+        client.guilds.cache.first().members.cache.forEach(member => {
+          let ignore = false;
+          Object.keys(client.ignoredRoleCache).forEach(k => {
+            if (member.roles.cache.has(client.ignoredRoleCache[k])) ignore = true;
+          });
+
+          if (!ignore) {
+            Log.info(`${member.nickname} is not linked on website, resetting to ZDV Guest`);
+            let hasGuest = false;
+            member.roles.cache.forEach(role => {
+              if (role.id !== client.roleCache["ZDV Guest"]) {
+                member.roles.remove(role);
+              } else {
+                hasGuest = true;
+              }
+            });
+
+            if (!hasGuest) {
+              member.roles.add(client.roleCache["ZDV Guest"]);
+            }
+          }
+        });
+        */
+
       cronRunning = false;
     }
   });
