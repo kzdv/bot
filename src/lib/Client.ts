@@ -4,14 +4,10 @@ import Command from "../commands/Command";
 import Log from "./Log";
 import { resolve, join } from "path";
 import Database from "./Database";
-import Rcon from "rcon";
-
 export default class Client extends Discord.Client {
   commands: Discord.Collection<string, Command>;
   aliases: Discord.Collection<string, Command>;
   db: Database;
-  rconconfig: RconConfig;
-  rcon: Rcon;
   roleCache: roleCache;
   ignoredRoleCache: roleCache;
 

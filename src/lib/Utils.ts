@@ -15,11 +15,6 @@ class Utils {
     (channel as Discord.TextChannel).send(msg, { embed: embeddedmsg, split: true });
   }
 
-  static sendRconMessage(client: Client, msg: string) {
-    client.rcon.connect();
-    client.rcon.send(msg);
-  }
-
   // @TODO define type for controller
   static VerifyRoles(client: Client, member: GuildMember, con: any) {
     let shouldHaveRoles = [];
