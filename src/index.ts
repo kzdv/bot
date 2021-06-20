@@ -29,15 +29,9 @@ client.on("ready", async () => {
   guild.me.setNickname("Master Control Program");
   await guild.roles.fetch();
   const roles = [
-    "ZDV Senior Staff",
-    "ZDV Staff",
-    "Training Staff",
     "Home Controller",
     "Visiting Controller",
     "ZDV Guest",
-    //    "Web Team",
-    //    "Event Team",
-    //    "FE Team",
     "Administrator",
     "Supervisor",
     "Instructor 3",
@@ -49,7 +43,8 @@ client.on("ready", async () => {
     "Student 1",
     "Observer",
   ];
-  const rolesToIgnore = ["VATUSA/VATGOV Staff"];
+  // Roles to ignore name settings
+  const rolesToIgnore = ["VATUSA/VATGOV Staff", "ZDV Senior Staff", "ZDV Staff"];
   let rc: roleCache = {};
 
   roles.forEach(async (r) => {

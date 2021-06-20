@@ -66,7 +66,9 @@ class Utils {
     shouldHaveRoles.forEach(val => {
       if (!member.roles.cache.has(val)) {
         Log.info(`Member ${member.nickname} is missing role ${val}`);
-        member.roles.add(val);
+        member.roles.add(val).catch((err) => {
+          Log.error(`Error adding role to ${member.nickname}, role is ${member.guild.roles.cache.get(val).name}: ${err}`);
+        });
       }
     });
 
@@ -75,7 +77,9 @@ class Utils {
       if (Object.values(client.roleCache).indexOf(r.id) > -1) {
         if (!shouldHaveRoles.includes(r.id)) {
           Log.info(`Member ${member.nickname} shouldn't have role ${r.name}`);
-          r.delete();
+          member.roles.remove(r.id).catch((err) => {
+            Log.error(`Error deleting role from ${member.nickname}, role is ${r.name}: ${err}`);
+          });
         }
       }
     });
@@ -88,9 +92,11 @@ class Utils {
     if (!ignore) {
       let nickname = `${con.first_name} ${con.last_name} | ${Controller.getThirdArgument(con)}`;
 
-      if (member.nickname !== nickname) {
+      if (member.nickname !== nickname && member.user.username != nickname) {
         Log.info(`Member ${member.nickname} to be reset to ${nickname}`);
-        member.setNickname(nickname);
+        member.setNickname(nickname).catch((err) => {
+          Log.error(`Error changing nickname of ${member.nickname} to ${nickname}: ${err}`);
+        });
       }
     }
   }
