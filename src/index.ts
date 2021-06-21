@@ -91,7 +91,7 @@ client.on("ready", async () => {
             if (member.roles.cache.has(client.ignoredRoleCache[k])) ignore = true;
           });
 
-          if (!ignore) {
+          if (!ignore && !dealtWith.includes(member.id)) {
             Log.info(`${member.nickname} is not linked on website, resetting to ZDV Guest`);
             let hasGuest = false;
             member.roles.cache.forEach(role => {
