@@ -76,24 +76,22 @@ const runJob = async () => {
   await guild.members.fetch(); // Update Member Cache
   Log.info(`Starting roles check`);
   const data = (await axios.get("https://denartcc.org/getRoster")).data;
-  let dealtWith = [];
   data.forEach(async (controller) => {
     if (client.guilds.cache.first().members.cache.has(controller.discord)) {
       let member = await guild.members.fetch(controller.discord);
-      dealtWith.push(member.id);
       Utils.VerifyRoles(client, member, controller);
     }
   });
 
-  Log.info(`Starting not linked check: ${JSON.stringify(dealtWith)}`);
+  Log.info(`Starting not linked check`);
   guild.members.cache.forEach((member) => {
-    Log.info(`Checking ${member.nickname || member.user.tag}: ${member.id}`)
     let ignore = false;
-    if (dealtWith.includes(member.id)) return;
+    data.forEach(controller => {
+      if (controller.discord === member.id) ignore = true;
+    });
 
     Object.keys(client.ignoredRoleCache).forEach((k) => {
       if (member.roles.cache.has(client.ignoredRoleCache[k])) {
-        Log.info(`${member.nickname || member.user.tag} has ignored role: ${k}`);
         ignore = true;
       }
     });
@@ -102,19 +100,21 @@ const runJob = async () => {
       Log.info(`${member.nickname || member.user.tag} is not linked on website, resetting to ZDV Guest`);
       let hasGuest = false;
       member.roles.cache.forEach((role) => {
-        if (role.id !== client.roleCache["ZDV Guest"]) {
-/*          member.roles.remove(role).catch((err) => {
+        if (role.id !== client.roleCache["ZDV Guest"] && role.name !== "@everyone") {
+          Log.info(`-- Removing: ${role.name} to ${member.nickname || member.user.tag}`);
+          member.roles.remove(role).catch((err) => {
             console.log(`Couldn't remove role ${role.name} from ${member.nickname || member.user.tag}: ${err}`);
-          }); */
+          });
         } else {
           hasGuest = true;
         }
       });
 
       if (!hasGuest) {
-/*        member.roles.add(client.roleCache["ZDV Guest"]).catch((err) => {
+        Log.info(`-- Adding: ZDV Guest to ${member.nickname || member.user.tag}`);
+        member.roles.add(client.roleCache["ZDV Guest"]).catch((err) => {
           console.log(`Couldn't add ZDV Guest role to ${member.nickname || member.user.tag}: ${err}`);
-        }); */
+        });
       }
     }
   });
