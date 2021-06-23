@@ -86,6 +86,9 @@ const runJob = async () => {
   Log.info(`Starting not linked check`);
   guild.members.cache.forEach((member) => {
     let ignore = false;
+
+    if (member.user.bot) return;
+
     data.forEach(controller => {
       if (controller.discord === member.id) ignore = true;
     });
