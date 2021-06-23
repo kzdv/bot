@@ -19,6 +19,7 @@ const config: Config = JSON.parse(fs.readFileSync(path.resolve("config.json")).t
 
 const client = new Client();
 let guild: Discord.Guild;
+let cronRunning = false;
 
 Log.info(`MASTER CONTROL PROGRAM ${global.__version}`);
 
@@ -57,62 +58,62 @@ client.on("ready", async () => {
   });
   client.ignoredRoleCache = rci;
 
-  //await client.guilds.cache.first().roles.fetch(); // Update Role Cache
-  await client.guilds.cache.first().members.fetch(); // Update Member Cache
-  const data = (await axios.get("https://denartcc.org/getRoster")).data;
-  data.forEach(async (controller) => {
-    if (client.guilds.cache.first().members.cache.has(controller.discord)) {
-      let member = await client.guilds.cache.first().members.fetch(controller.discord);
+  runJob();
 
-      Utils.VerifyRoles(client, member, controller);
-    }
-  });
-
-  let cronRunning = false;
   cron.schedule("*/5 * * * *", async () => {
     if (!cronRunning) {
       cronRunning = true;
-      await client.guilds.cache.first().roles.fetch(); // Update Role Cache
-      await client.guilds.cache.first().members.fetch(); // Update Member Cache
-      const data = (await axios.get("https://denartcc.org/getRoster")).data;
-      let dealtWith = [];
-      data.forEach(async (controller) => {
-        if (client.guilds.cache.first().members.cache.has(controller.discord)) {
-          let member = await client.guilds.cache.first().members.fetch(controller.discord);
-          dealtWith.push(member.id);
-          Utils.VerifyRoles(client, member, controller);
-        }
-      });
 
-      client.guilds.cache.first().members.cache.forEach(member => {
-        let ignore = false;
-        if (dealtWith.includes(member.id)) return;
-
-        Object.keys(client.ignoredRoleCache).forEach(k => {
-          if (member.roles.cache.has(client.ignoredRoleCache[k])) ignore = true;
-        });
-
-        if (!ignore) {
-          Log.info(`${member.nickname} is not linked on website, resetting to ZDV Guest`);
-          let hasGuest = false;
-          member.roles.cache.forEach(role => {
-            if (role.id !== client.roleCache["ZDV Guest"]) {
-              member.roles.remove(role);
-            } else {
-              hasGuest = true;
-            }
-          });
-
-          if (!hasGuest) {
-            member.roles.add(client.roleCache["ZDV Guest"]);
-          }
-        }
-      });
+      runJob();
       
       cronRunning = false;
     }
   });
 });
+
+const runJob = async () => {
+  await guild.roles.fetch(); // Update Role Cache
+  await guild.members.fetch(); // Update Member Cache
+  Log.info(`Starting roles check`);
+  const data = (await axios.get("https://denartcc.org/getRoster")).data;
+  let dealtWith = [];
+  data.forEach(async (controller) => {
+    if (client.guilds.cache.first().members.cache.has(controller.discord)) {
+      let member = await guild.members.fetch(controller.discord);
+      dealtWith.push(member.id);
+      Utils.VerifyRoles(client, member, controller);
+    }
+  });
+
+  Log.info(`Starting not linked check`);
+  guild.members.cache.forEach((member) => {
+    let ignore = false;
+    if (dealtWith.includes(member.id)) return;
+
+    Object.keys(client.ignoredRoleCache).forEach((k) => {
+      if (member.roles.cache.has(client.ignoredRoleCache[k])) {
+        Log.info(`${member.nickname} has ignored role: ${k}`);
+        ignore = true;
+      }
+    });
+
+    if (!ignore) {
+      Log.info(`${member.nickname} is not linked on website, resetting to ZDV Guest`);
+      let hasGuest = false;
+      member.roles.cache.forEach((role) => {
+        if (role.id !== client.roleCache["ZDV Guest"]) {
+          member.roles.remove(role);
+        } else {
+          hasGuest = true;
+        }
+      });
+
+      if (!hasGuest) {
+        member.roles.add(client.roleCache["ZDV Guest"]);
+      }
+    }
+  });
+}
 
 client.on("guildMemberAdd", (member) => {
   member.roles.add(client.roleCache["ZDV Guest"]);
