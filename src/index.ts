@@ -85,31 +85,36 @@ const runJob = async () => {
     }
   });
 
-  Log.info(`Starting not linked check`);
+  Log.info(`Starting not linked check: ${JSON.stringify(dealtWith)}`);
   guild.members.cache.forEach((member) => {
+    Log.info(`Checking ${member.nickname || member.user.tag}: ${member.id}`)
     let ignore = false;
     if (dealtWith.includes(member.id)) return;
 
     Object.keys(client.ignoredRoleCache).forEach((k) => {
       if (member.roles.cache.has(client.ignoredRoleCache[k])) {
-        Log.info(`${member.nickname} has ignored role: ${k}`);
+        Log.info(`${member.nickname || member.user.tag} has ignored role: ${k}`);
         ignore = true;
       }
     });
 
     if (!ignore) {
-      Log.info(`${member.nickname} is not linked on website, resetting to ZDV Guest`);
+      Log.info(`${member.nickname || member.user.tag} is not linked on website, resetting to ZDV Guest`);
       let hasGuest = false;
       member.roles.cache.forEach((role) => {
         if (role.id !== client.roleCache["ZDV Guest"]) {
-          member.roles.remove(role);
+/*          member.roles.remove(role).catch((err) => {
+            console.log(`Couldn't remove role ${role.name} from ${member.nickname || member.user.tag}: ${err}`);
+          }); */
         } else {
           hasGuest = true;
         }
       });
 
       if (!hasGuest) {
-        member.roles.add(client.roleCache["ZDV Guest"]);
+/*        member.roles.add(client.roleCache["ZDV Guest"]).catch((err) => {
+          console.log(`Couldn't add ZDV Guest role to ${member.nickname || member.user.tag}: ${err}`);
+        }); */
       }
     }
   });
