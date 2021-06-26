@@ -100,7 +100,6 @@ const runJob = async () => {
     });
 
     if (!ignore) {
-      Log.info(`${member.nickname || member.user.tag} is not linked on website, resetting to ZDV Guest`);
       let hasGuest = false;
       member.roles.cache.forEach((role) => {
         if (role.id !== client.roleCache["ZDV Guest"] && role.name !== "@everyone") {
@@ -108,7 +107,7 @@ const runJob = async () => {
           member.roles.remove(role).catch((err) => {
             console.log(`Couldn't remove role ${role.name} from ${member.nickname || member.user.tag}: ${err}`);
           });
-        } else {
+        } else if (role.id === client.roleCache["ZDV Guest"]) {
           hasGuest = true;
         }
       });
