@@ -8,10 +8,7 @@ export default class DevServerRestart extends Command {
     super(client, {
       command: "reset channel",
       description: "Will clone and destroy the channel command is run in",
-      roles: [
-        "ZDV Senior Staff",
-        "ZDV Staff"
-      ]
+      roles: ["481985190164692995", "447538332730261524"],
     });
   }
 

@@ -7,9 +7,7 @@ export default class VersionCommand extends Command {
       command: "request version information",
       alias: "version",
       description: "MCP Version information",
-      roles: [
-        "everyone"
-      ]
+      roles: ["481985190164692995", "447538332730261524"],
     });
   }
 
