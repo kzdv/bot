@@ -9,7 +9,8 @@ export default class DevServerRestart extends Command {
       command: "reset channel",
       description: "Will clone and destroy the channel command is run in",
       roles: [
-        "administrator"
+        "ZDV Senior Staff",
+        "ZDV Staff"
       ]
     });
   }

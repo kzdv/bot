@@ -9,7 +9,7 @@ export default class DevServerRestart extends Command {
       command: "clear",
       description: "Clear last X messages (up to 100)",
       roles: [
-        "administrator"
+        "ZDV Senior Staff"
       ]
     });
   }
