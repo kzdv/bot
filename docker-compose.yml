@@ -5,5 +5,3 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: always
-    volumes:
-      - src:/app/src
