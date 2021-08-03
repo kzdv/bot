@@ -85,7 +85,7 @@ class Utils {
     });
 
     if (!ignore) {
-      let nickname = `${con.first_name} ${con.last_name} | ${Controller.getThirdArgument(con)}`;
+      let nickname = `${con.first_name} - ${con.initials} | ${Controller.getThirdArgument(con)}`;
 
       if (member.nickname !== nickname && member.user.username != nickname) {
         Log.info(`Member ${member.nickname} to be reset to ${nickname}`);

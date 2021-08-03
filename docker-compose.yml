@@ -6,4 +6,4 @@ services:
       dockerfile: Dockerfile
     restart: always
     environment:
-      - DISCORD_TOKEN=foobar
+      - DISCORD_TOKEN=ODY4NjYxNTExNzQzMjM4MTQ1.YPy6Ew.fTDRGZ3_aVotj0zR8kCtAaGT5u0

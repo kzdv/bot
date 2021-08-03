@@ -3,11 +3,11 @@ import { readdirSync } from "fs";
 import Command from "../commands/Command";
 import Log from "./Log";
 import { resolve, join } from "path";
-import Database from "./Database";
+//import Database from "./Database";
 export default class Client extends Discord.Client {
   commands: Discord.Collection<string, Command>;
   aliases: Discord.Collection<string, Command>;
-  db: Database;
+ // db: Database;
   roleCache: roleCache;
   ignoredRoleCache: roleCache;
 
@@ -49,7 +49,7 @@ export default class Client extends Discord.Client {
     return this;
   }
 
-  loadDatabase(config: DBConfig) {
-    this.db = new Database(config);
-  }
+//  loadDatabase(config: DBConfig) {
+  //  this.db = new Database(config);
+  //}
 }

@@ -19,8 +19,7 @@ const config: Config = JSON.parse(fs.readFileSync(path.resolve("config.json")).t
 
 const client = new Client();
 let guild: Discord.Guild;
-
-Log.info(`MASTER CONTROL PROGRAM ${global.__version}`);
+//Log.info(`MASTER CONTROL PROGRAM ${global.__version}`);
 
 client.on("ready", async () => {
   Log.info(`Logged in as ${client.user.tag}`);
@@ -58,7 +57,9 @@ client.on("ready", async () => {
   client.ignoredRoleCache = rci;
 
   //await client.guilds.cache.first().roles.fetch(); // Update Role Cache
+  console.log("before 0");
   await client.guilds.cache.first().members.fetch(); // Update Member Cache
+  console.log("after 0");
   const data = (await axios.get("https://denartcc.org/getRoster")).data;
   data.forEach(async (controller) => {
     if (client.guilds.cache.first().members.cache.has(controller.discord)) {
@@ -120,7 +121,7 @@ client.on("guildMemberAdd", (member) => {
 
 client.loadEvents("./events");
 client.loadCommands("./commands");
-client.loadDatabase(config.database);
+//client.loadDatabase(config.database);
 
 client.login(config.discord.token);
 
