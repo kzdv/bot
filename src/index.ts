@@ -12,7 +12,7 @@ if (!fs.existsSync(path.resolve("config.json"))) {
   process.exit(1);
 }
 
-global.__version = "1.1.3";
+global.__version = "1.2.0";
 global.__basedir = __dirname;
 
 const config: Config = JSON.parse(fs.readFileSync(path.resolve("config.json")).toString());
@@ -56,10 +56,7 @@ client.on("ready", async () => {
   });
   client.ignoredRoleCache = rci;
 
-  //await client.guilds.cache.first().roles.fetch(); // Update Role Cache
-  console.log("before 0");
   await client.guilds.cache.first().members.fetch(); // Update Member Cache
-  console.log("after 0");
   const data = (await axios.get("https://denartcc.org/getRoster")).data;
   data.forEach(async (controller) => {
     if (client.guilds.cache.first().members.cache.has(controller.discord)) {

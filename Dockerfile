@@ -2,6 +2,7 @@ FROM node:lts-alpine
 
 RUN apk update
 WORKDIR /app
+
 COPY package*.json ./
 COPY tsconfig.json ./
 COPY config.json.sh ./

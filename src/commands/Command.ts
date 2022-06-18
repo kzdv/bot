@@ -23,7 +23,7 @@ class Command {
   checkPermissions(message: Discord.Message, ownerOverride = true): boolean {
     let matched = false;
     this.roles.forEach((v) => {
-      if (v.toLowerCase() === "administrator" && message.member.hasPermission("ADMINISTRATOR")) matched = true;
+      if (v.toLowerCase() === "administrator" && message.member.permissions.has("ADMINISTRATOR")) matched = true;
       if (v.toLowerCase() === "everyone") matched = true;
       if (message.member.roles.cache.has(v)) matched = true;
     });

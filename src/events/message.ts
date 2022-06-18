@@ -8,7 +8,7 @@ export default async function (client: Client, message: Discord.Message) {
   // Since we're not in the link channel, ignore all others from bots
   if (message.author.bot) return;
 
-  if (message.channel.type === "dm") {
+  if (message.channel.type === "DM") {
     // Only respond to version DMs, ignore the rest
     if (message.content.toLowerCase() === "version") {
       message.author.send(`MASTER CONTROL PROGRAM VERSION ${global.__version} BY DANIEL A. HAWTON. END OF LINE.`);

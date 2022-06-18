@@ -1,0 +1,51 @@
+#!/bin/bash
+
+set -ex
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --tag)
+            TAG="$2"
+            shift 2
+            ;;
+        --image)
+            IMAGE="$2"
+            shift 2
+            ;;
+        --hub)
+            HUB="$2"
+            shift 2
+            ;;
+        --push)
+            PUSH=1
+            shift
+            ;;
+        --help)
+            echo "Usage: build.sh [--tag <tag>] [--image <image>] [--hub <hub>] [--push]"
+            echo "  --tag <tag>      Tag to use for the image (defaults to 'latest')"
+            echo "  --image <image>  Docker image to build (defaults to 'bot')"
+            echo "  --hub <hub>      Docker hub to push to (defaults to 'docker.io/denartcc') [example: docker.io/username]"
+            echo "  --push           Push the image to the hub"
+            echo "  --help: show this help message and exit"
+            exit 0
+            ;;
+        *)
+            echo "Unknown argument: $1"
+            exit 1
+            ;;
+    esac
+done
+
+HUB=${HUB:-docker.io/denartcc}
+TAG=${TAG:-latest}
+IMAGE=${IMAGE:-bot}
+
+if [[ ! -z "$HUB" ]]; then
+  HUB="$HUB/"
+fi
+
+docker build . -t $HUB$IMAGE:$TAG
+
+if [[ ! -z "$PUSH" ]]; then
+  docker push $HUB$IMAGE:$TAG
+fi

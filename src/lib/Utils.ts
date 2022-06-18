@@ -4,17 +4,6 @@ import Controller from "./Controller";
 import Log from "./Log";
 
 class Utils {
-  static sendMessage(
-    guild: Discord.Guild,
-    announceChannel: string,
-    msg: string,
-    embeddedmsg: Discord.MessageEmbed,
-  ): void {
-    const channel = guild.channels.cache.find((ch) => (ch.name === announceChannel || ch.id === announceChannel));
-    if (!channel) return;
-    (channel as Discord.TextChannel).send(msg, { embed: embeddedmsg, split: true });
-  }
-
   // @TODO define type for controller
   static VerifyRoles(client: Client, member: GuildMember, con: any) {
     let shouldHaveRoles = [];
