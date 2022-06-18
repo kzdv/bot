@@ -1,4 +1,4 @@
-import Discord from "discord.js";
+import Discord, { Intents } from "discord.js";
 import fs from "fs";
 import path from "path";
 import Log from "./lib/Log";
@@ -17,7 +17,14 @@ global.__basedir = __dirname;
 
 const config: Config = JSON.parse(fs.readFileSync(path.resolve("config.json")).toString());
 
-const client = new Client();
+const client = new Client({
+  intents: [
+    Intents.FLAGS.GUILDS,
+    Intents.FLAGS.DIRECT_MESSAGES,
+    Intents.FLAGS.GUILD_MESSAGES,
+    Intents.FLAGS.GUILD_MEMBERS,
+  ]
+});
 let guild: Discord.Guild;
 //Log.info(`MASTER CONTROL PROGRAM ${global.__version}`);
 
