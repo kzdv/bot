@@ -9,11 +9,13 @@ let cronRunning = false;
 class Utils {
   static async UpdateMembers(client: Client) {
     if (!cronRunning) {
+      Log.info("Starting cron job");
       cronRunning = true;
       try {
         await client.guilds.cache.first().roles.fetch(); // Update Role Cache
       } catch (e) {
         console.log("Failed to update role cache", e);
+        cronRunning = false;
         return;
       }
 
@@ -21,6 +23,7 @@ class Utils {
         await client.guilds.cache.first().members.fetch(); // Update Member Cache
       } catch (e) {
         console.log("Failed to update member cache", e);
+        cronRunning = false;
         return;
       }
 
@@ -30,6 +33,7 @@ class Utils {
         data = (await axios.get("https://denartcc.org/getRoster")).data;
       } catch (e) {
         console.log("Failed to get roster", e);
+        cronRunning = false;
         return;
       }
 
@@ -43,6 +47,8 @@ class Utils {
       });
 
       cronRunning = false;
+    } else {
+      Log.info("Cron is already running, skipping update");
     }
   }
 
