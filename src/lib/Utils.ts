@@ -46,6 +46,7 @@ class Utils {
         }
       });
 
+      Log.info("Finished cron job");
       cronRunning = false;
     } else {
       Log.info("Cron is already running, skipping update");
