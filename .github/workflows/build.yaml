@@ -46,7 +46,7 @@ jobs:
         env:
           KUBE_CONFIG: ${{ secrets.KUBECONFIG }}
         with:
-          args: rollout restart deployment/$SERVICE_NAME -n prod
+          args: rollout restart deployment/bot -n prod
       
       - name: Deploy image to cluster (dev)
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/dev' }}
@@ -54,4 +54,4 @@ jobs:
         env:
           KUBE_CONFIG: ${{ secrets.KUBECONFIG }}
         with:
-          args: rollout restart deployment/$SERVICE_NAME -n dev
+          args: rollout restart deployment/bot -n dev
