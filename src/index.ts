@@ -26,7 +26,7 @@ const client = new Client({
   ]
 });
 let guild: Discord.Guild;
-//Log.info(`MASTER CONTROL PROGRAM ${global.__version}`);
+Log.info(`MASTER CONTROL PROGRAM ${global.__version}`);
 
 client.on("ready", async () => {
   Log.info(`Logged in as ${client.user.tag}`);
@@ -55,14 +55,17 @@ client.on("ready", async () => {
 
   roles.forEach(async (r) => {
     rc[r] = guild.roles.cache.find((rl) => rl.name === r)?.id;
+    console.log(`Role ${r} found with id ${rc[r]}`);
   });
   client.roleCache = rc;
   let rci: roleCache = {};
   rolesToIgnore.forEach(async (r) => {
     rci[r] = guild.roles.cache.find((rl) => rl.name === r)?.id;
+    console.log(`Role to ignore ${r} found with id ${rci[r]}`);
   });
   client.ignoredRoleCache = rci;
-
+  Utils.UpdateMembers(client);
+/*
   await client.guilds.cache.first().members.fetch(); // Update Member Cache
   const data = (await axios.get("https://denartcc.org/getRoster")).data;
   data.forEach(async (controller) => {
@@ -72,50 +75,9 @@ client.on("ready", async () => {
       Utils.VerifyRoles(client, member, controller);
     }
   });
-
-  let cronRunning = false;
+*/
   cron.schedule("*/5 * * * *", async () => {
-    if (!cronRunning) {
-      cronRunning = true;
-      await client.guilds.cache.first().roles.fetch(); // Update Role Cache
-      await client.guilds.cache.first().members.fetch(); // Update Member Cache
-      const data = (await axios.get("https://denartcc.org/getRoster")).data;
-      let dealtWith = [];
-      data.forEach(async (controller) => {
-        if (client.guilds.cache.first().members.cache.has(controller.discord)) {
-          let member = await client.guilds.cache.first().members.fetch(controller.discord);
-          dealtWith.push(member.id);
-          Utils.VerifyRoles(client, member, controller);
-        }
-      });
-      /*
-        Coming soon (TM)
-        client.guilds.cache.first().members.cache.forEach(member => {
-          let ignore = false;
-          Object.keys(client.ignoredRoleCache).forEach(k => {
-            if (member.roles.cache.has(client.ignoredRoleCache[k])) ignore = true;
-          });
-
-          if (!ignore) {
-            Log.info(`${member.nickname} is not linked on website, resetting to ZDV Guest`);
-            let hasGuest = false;
-            member.roles.cache.forEach(role => {
-              if (role.id !== client.roleCache["ZDV Guest"]) {
-                member.roles.remove(role);
-              } else {
-                hasGuest = true;
-              }
-            });
-
-            if (!hasGuest) {
-              member.roles.add(client.roleCache["ZDV Guest"]);
-            }
-          }
-        });
-        */
-
-      cronRunning = false;
-    }
+    Utils.UpdateMembers(client);
   });
 });
 

@@ -2,8 +2,50 @@ import Discord, { GuildMember } from "discord.js";
 import Client from "./Client";
 import Controller from "./Controller";
 import Log from "./Log";
+import axios from "axios";
+
+let cronRunning = false;
 
 class Utils {
+  static async UpdateMembers(client: Client) {
+    if (!cronRunning) {
+      cronRunning = true;
+      try {
+        await client.guilds.cache.first().roles.fetch(); // Update Role Cache
+      } catch (e) {
+        console.log("Failed to update role cache", e);
+        return;
+      }
+
+      try {
+        await client.guilds.cache.first().members.fetch(); // Update Member Cache
+      } catch (e) {
+        console.log("Failed to update member cache", e);
+        return;
+      }
+
+      let data;
+
+      try {
+        data = (await axios.get("https://denartcc.org/getRoster")).data;
+      } catch (e) {
+        console.log("Failed to get roster", e);
+        return;
+      }
+
+      let dealtWith = [];
+      data.forEach(async (controller) => {
+        if (client.guilds.cache.first().members.cache.has(controller.discord)) {
+          let member = await client.guilds.cache.first().members.fetch(controller.discord);
+          dealtWith.push(member.id);
+          Utils.VerifyRoles(client, member, controller);
+        }
+      });
+
+      cronRunning = false;
+    }
+  }
+
   // @TODO define type for controller
   static VerifyRoles(client: Client, member: GuildMember, con: any) {
     let shouldHaveRoles = [];
@@ -73,7 +115,7 @@ class Utils {
       if (member.roles.cache.has(client.ignoredRoleCache[k])) ignore = true;
     });
 
-    if (!ignore) {
+    if (!ignore && con.initials !== null) {
       let nickname = `${con.first_name} - ${con.initials} | ${Controller.getThirdArgument(con)}`;
 
       if (member.nickname !== nickname && member.user.username != nickname) {
