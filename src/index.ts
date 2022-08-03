@@ -23,8 +23,12 @@ const client = new Client({
     Intents.FLAGS.DIRECT_MESSAGES,
     Intents.FLAGS.GUILD_MESSAGES,
     Intents.FLAGS.GUILD_MEMBERS,
-  ]
+  ],
+  partials: [
+    'CHANNEL',
+  ],
 });
+client.githubToken = config.github.token;
 let guild: Discord.Guild;
 Log.info(`MASTER CONTROL PROGRAM ${global.__version}`);
 

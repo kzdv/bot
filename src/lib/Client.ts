@@ -10,6 +10,7 @@ export default class Client extends Discord.Client {
  // db: Database;
   roleCache: roleCache;
   ignoredRoleCache: roleCache;
+  githubToken: string;
 
   constructor(options?) {
     super(options);

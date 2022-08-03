@@ -5,9 +5,6 @@ import axios, { AxiosAdapter, AxiosResponse } from "axios";
 import Utils from "../lib/Utils";
 
 export default async function (client: Client, message: Discord.Message) {
-  // Since we're not in the link channel, ignore all others from bots
-  if (message.author.bot) return;
-
   if (message.channel.type === "DM") {
     // Only respond to version DMs, ignore the rest
     if (message.content.toLowerCase() === "version") {

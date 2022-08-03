@@ -9,6 +9,9 @@ declare interface Config {
   discord: {
     token: string;
   };
+  github: {
+    token: string;
+  };
   database: DBConfig;
 }
 

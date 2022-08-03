@@ -44,14 +44,30 @@ jobs:
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         uses: actions-hub/kubectl@v1.24.2
         env:
-          KUBE_CONFIG: ${{ secrets.KUBECONFIG }}
+          KUBE_CONFIG: ${{ secrets.CI_KUBECONFIG }}
         with:
           args: rollout restart deployment/bot -n prod
+
+      - name: Wait for deployment to be ready (main)
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        uses: actions-hub/kubectl@v1.24.2
+        env:
+          KUBE_CONFIG: ${{ secrets.CI_KUBECONFIG }}
+        with:
+          args: rollout status deployment/bot -n prod
       
       - name: Deploy image to cluster (dev)
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/dev' }}
         uses: actions-hub/kubectl@v1.24.2
         env:
-          KUBE_CONFIG: ${{ secrets.KUBECONFIG }}
+          KUBE_CONFIG: ${{ secrets.CI_KUBECONFIG }}
         with:
           args: rollout restart deployment/bot -n dev
+
+      - name: Wait for deployment to be ready (dev)
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        uses: actions-hub/kubectl@v1.24.2
+        env:
+          KUBE_CONFIG: ${{ secrets.CI_KUBECONFIG }}
+        with:
+          args: rollout status deployment/bot -n dev
