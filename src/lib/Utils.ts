@@ -123,7 +123,17 @@ class Utils {
     });
 
     if (!ignore && con.initials !== null) {
-      let nickname = `${con.first_name} - ${con.initials} | ${Controller.getThirdArgument(con)}`;
+      let nickname = `${con.first_name} ${con.last_name.substr(0,1)}. - ${con.initials}${Controller.getThirdArgument(con)}`;
+
+      // Just in case we hit a really long firstname...
+      // Should be rare...
+      if (nickname.length > 32) {
+        // period + space (2), last initial + period (2), space dash space OI (5), variable remainder
+        let remainder_length = 9 + Controller.getThirdArgument(con).length;
+        let first = `${con.first_name.substring(0, 32 - remainder_length)}.`;
+
+        nickname = `${first} ${con.last_name.substr(0,1)}. - ${con.initials}${Controller.getThirdArgument(con)}`;
+      }
 
       if (member.nickname !== nickname && member.user.username != nickname) {
         Log.info(`Member ${member.nickname} to be reset to ${nickname}`);

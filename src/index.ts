@@ -54,7 +54,7 @@ client.on("ready", async () => {
     "Observer",
   ];
   // Roles to ignore name settings
-  const rolesToIgnore = ["VATUSA/VATGOV Staff", "ZDV Senior Staff", "ZDV Staff"];
+  const rolesToIgnore = ["bot-ignore"];
   let rc: roleCache = {};
 
   roles.forEach(async (r) => {
